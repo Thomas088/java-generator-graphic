@@ -1,3 +1,60 @@
-.button {
-    -fx-text-fill: blue;
+.button{
+	-fx-background-color : transparent;
+	-fx-text-fill : #203764;
+	-fx-border-color : #203764;
+}
+
+.button:hover{
+	-fx-background-color : #305496;
+	-fx-text-fill : white;
+}
+
+.button:pressed{
+	-fx-background-color : #D9E1F2;
+	-fx-text-fill : #203764;
+}
+
+
+.buttonE{
+	-fx-background-color : transparent;
+	-fx-text-fill : #C00000;
+	-fx-border-color : #C00000;
+}
+
+.buttonE:hover{
+	-fx-background-color : #FF3B3B;
+	-fx-text-fill : white;
+}
+
+.buttonE:pressed{
+	-fx-background-color : #FFD5D5;
+	-fx-text-fill : #203764;
+}
+
+.table-view .column-header,
+.table-view .column-header-background .filler{
+	-fx-cell-size : 20 ; 
+	-fx-background-color : #2F75B5;
+}
+
+.table-view .column-header .label{
+	-fx-text-fill : white;
+	-fx-alignment : CENTER-LEFT; 
+}
+
+.table-view .cell{
+	-fx-cell-size : 30 ; 
+	-fx-text-fill : #000000;
+	-fx-alignment : CENTER-LEFT; 
+	-fx-alignment : center-left; 
+}
+
+.table-view .cell:selected{
+	-fx-background-color : #203764;
+	-fx-text-fill : white;
+}
+ 
+.pane{
+	
+	-fx-background-color : #203764;
 }
