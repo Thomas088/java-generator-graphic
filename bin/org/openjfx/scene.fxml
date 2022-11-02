@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" styleClass="table-view" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="generatorTitle" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: white;" styleClass="table-view" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.FXMLController">
    <children>
       <VBox alignment="CENTER" layoutX="347.0" layoutY="21.0" prefHeight="81.0" prefWidth="307.0" stylesheets="@styles.css">
          <children>
@@ -17,9 +18,12 @@
             </Text>
          </children>
       </VBox>
-      <Button layoutX="68.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="PARSE FILE" />
-      <Button layoutX="867.0" layoutY="740.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="EXIT" />
-      <VBox id="TablesViewContainer" fx:id="TablesViewContainer" layoutX="68.0" layoutY="167.0" prefHeight="549.0" prefWidth="855.0" />
-      <Button layoutX="810.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="GENERATE FILE" />
+      <Button fx:id="parseFileButton" layoutX="68.0" layoutY="124.0" mnemonicParsing="false" onAction="#parseFile" prefHeight="27.0" prefWidth="113.0" text="PARSE FILE" />
+      <Button layoutX="830.0" layoutY="727.0" mnemonicParsing="false" onAction="#exitProgram" prefHeight="27.0" prefWidth="113.0" text="EXIT" />
+      <VBox id="TablesViewContainer" fx:id="tablesViewContainer" layoutX="68.0" layoutY="162.0" prefHeight="579.0" prefWidth="855.0" />
+      <Button layoutX="810.0" layoutY="124.0" mnemonicParsing="false" onAction="#generateFile" prefHeight="27.0" prefWidth="113.0" text="GENERATE FILE" />
+      <Button fx:id="previousTableButton" layoutX="127.0" layoutY="727.0" mnemonicParsing="false" onAction="#getPreviousTable" text="PREVIOUS TABLE" />
+      <Button fx:id="nextTableButton" layoutX="306.0" layoutY="727.0" mnemonicParsing="false" onAction="#getNextTable" text="NEXT TABLE" />
+      <Label fx:id="currentTableNameUI" layoutX="482.0" layoutY="116.0" />
    </children>
 </AnchorPane>

@@ -50,7 +50,6 @@
 }
 
 .table-view .cell:selected{
-	-fx-background-color : #203764;
 	-fx-text-fill : white;
 }
  
