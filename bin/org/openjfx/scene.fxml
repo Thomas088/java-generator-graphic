@@ -24,6 +24,6 @@
       <Button layoutX="810.0" layoutY="124.0" mnemonicParsing="false" onAction="#generateFile" prefHeight="27.0" prefWidth="113.0" text="GENERATE FILE" />
       <Button fx:id="previousTableButton" layoutX="127.0" layoutY="727.0" mnemonicParsing="false" onAction="#getPreviousTable" text="PREVIOUS TABLE" />
       <Button fx:id="nextTableButton" layoutX="306.0" layoutY="727.0" mnemonicParsing="false" onAction="#getNextTable" text="NEXT TABLE" />
-      <Label fx:id="currentTableNameUI" layoutX="482.0" layoutY="116.0" />
+      <Label fx:id="currentTableNameUI" layoutX="404.0" layoutY="104.0" prefHeight="29.0" prefWidth="193.0" />
    </children>
 </AnchorPane>

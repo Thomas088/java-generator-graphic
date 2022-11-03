@@ -2,10 +2,8 @@ package org.openjfx;
 import static java.lang.System.out;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-
-//import javafx.beans.property.SimpleStringProperty;
-
 // JFX Data Arrays
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,9 +11,11 @@ import javafx.collections.ObservableList;
 // JFX components
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
@@ -23,11 +23,12 @@ import javafx.scene.layout.VBox;
 // Utils
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
+import javax.security.auth.callback.Callback;
+
 // Console project packages
-import classes.from.console.project.DatabaseController;
 import classes.from.console.project.FileHandler;
 import classes.from.console.project.GeneratorLogger;
 import classes.from.console.project.Parser;
@@ -44,20 +45,27 @@ public class FXMLController {
 	private Parser parser = new Parser();
 	private File fileToExport;
 	private FileHandler fileHandler = new FileHandler();
-	GeneratorLogger logger = new GeneratorLogger();
+	private GeneratorLogger logger = new GeneratorLogger();
+	
+	private StringBuilder attrTempStr = new StringBuilder();
+	private StringBuilder typeTempStr = new StringBuilder();
+	private StringBuilder dbLinkTempStr = new StringBuilder();
 	
 	private Vector<TableData> listOfTables;
+	private Vector<FXMLDataHelper> attributeListHelper;
+	
+	private FXMLDataHelper newHelper;
 	
 	// Observables '$' suffixed because of JavaScript convention (useful)
-    private ObservableList<String> datasTablesList$; 
     private ObservableList<TableData> objTableArray$;
+    private ObservableList<FXMLDataHelper> helperTableArray$;
     
     // UI TABLE VIEW VARIABLES
-    private TableView<TableData> table;
-    private TableColumn<TableData, String> fieldNameColumn;
-    private TableColumn<TableData, String> typesColumn;
-    private TableColumn<TableData, String> dataTypeColumn;
-    private TableColumn<TableData, String> dbDataTypeColumn;
+    
+    private TableView<FXMLDataHelper> table;    
+    private TableColumn<FXMLDataHelper, String> fieldNameColumn;   
+    private TableColumn<FXMLDataHelper, String> typesColumn;    
+    private TableColumn<FXMLDataHelper, ComboBox> dataTypeColumn;
     
     private int indexTable;
     private int nbLines;
@@ -84,23 +92,21 @@ public class FXMLController {
      */
     public void initialize() {
     	
-    	// INIT VARIABLES
+    	// INIT INTEGER VARIABLES
     	indexTable = 0;
     	nbLines = 0;
     	itr = 0;
     	
-    	table = new TableView<TableData>();
-        fieldNameColumn = new TableColumn<TableData, String>("ATTRIBUTE");
-        typesColumn = new TableColumn<TableData, String>("TYPES");
-        dataTypeColumn = new TableColumn<TableData, String>("FROM FILE DATA TYPE");
-        dbDataTypeColumn = new TableColumn<TableData, String>("DATABASE DATA TYPE NEEDED");
+    	// INIT COLUMNS
+	    table = new TableView<FXMLDataHelper>();
+        fieldNameColumn = new TableColumn<FXMLDataHelper, String>("ATTRIBUTE");
+        typesColumn = new TableColumn<FXMLDataHelper, String>("TYPE");
+        dataTypeColumn = new TableColumn<FXMLDataHelper, ComboBox>("DATABASE DATA TYPE NEEDED");
         
         // SET COLUMNS WITH CORRECT SIZES
-        fieldNameColumn.setPrefWidth(220);
-        typesColumn.setPrefWidth(220);
-        dataTypeColumn.setPrefWidth(220);
-        dbDataTypeColumn.setPrefWidth(220);
-        
+        fieldNameColumn.setPrefWidth(250);
+        typesColumn.setPrefWidth(250);
+        dataTypeColumn.setPrefWidth(353);        
     }
     
     @FXML
@@ -109,39 +115,69 @@ public class FXMLController {
      */
     private void parseFile() {
     	
-    	out.println("PARSE FILE BUTTON OK");
-    	
     try {
     		
-    	  	listOfTables = parser.parse("./labo-test/mcfly.sql");
-    	  	parser.printArrayTableData(listOfTables);
+    	  	listOfTables = parser.parse("./labo-test/mcfly.sql");	  	
     	  	createFxElementsFromDataParse();
     		
     	} catch (Exception e) {
     		logger.logError("parseFile()", e.getMessage());
     	}
     	
+    }
+    
+    private void convertDataForTableView(TableData table) {
+    	
+    try {
+    	
+    		attributeListHelper = new Vector<FXMLDataHelper>();
+    		
+    		for (int i = 0; i < table.getAttributeList().size(); i++) {
+    			
+    	        newHelper = new FXMLDataHelper();
+    			final int iTemp = i;
+    			
+    			// set helper for datas
+    			attrTempStr.append(table.getAttributeList().get(iTemp));
+    			typeTempStr.append(table.getTypesList().get(iTemp).toUpperCase()); // uppsercase because only for display
+    			newHelper.setAttributeName(attrTempStr.toString());
+    			newHelper.setTypeName(typeTempStr.toString());
+    			
+    			// push
+    			attributeListHelper.add(newHelper);
+    			
+    			initStrings();
+    		}
+    		
+    	} catch (Exception e) {
+    		logger.logError("convertDataForTableView()", e.getMessage());
+    	}
+    	
     }  
     
-
 	@FXML
     /*
      * createFxElementsFromDataParse()
      */
     private void createFxElementsFromDataParse() {
-    	   
-    	    objTableArray$ = FXCollections.observableArrayList(listOfTables.get(indexTable));
- 	    	String tablename = objTableArray$.get(indexTable).getTableName();
- 	    	currentTableNameUI.setText(tablename);
-
- 	    	for (String attr : objTableArray$.get(indexTable).getAttributeList()) {
- 	    		
-	    		fieldNameColumn.setCellValueFactory(p -> new ReadOnlyStringWrapper(attr));
-	    		typesColumn.setCellValueFactory(p -> new ReadOnlyStringWrapper(attr));
- 	    	}
+		
+		    convertDataForTableView(listOfTables.get(indexTable));
+		    
+ 	    	String tablename = listOfTables.get(indexTable).getTableName();
+ 	    	currentTableNameUI.setText(tablename.toUpperCase());
+		    
+		    out.println("DATAS : " + attributeListHelper);
+		
+		    helperTableArray$ = FXCollections.observableArrayList();
+		    helperTableArray$.addAll(attributeListHelper);
+	    
+    	    fieldNameColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("attributeName"));
+    	    typesColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("typeName"));
+    	    dataTypeColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, ComboBox>("databaseLinkType"));
+ 	   	
+ 	    	table.setItems(helperTableArray$);
  	    	
- 	    	table.setItems(objTableArray$);
- 	    	table.getColumns().addAll(fieldNameColumn, typesColumn, dataTypeColumn, dbDataTypeColumn);
+ 	    	table.getColumns().addAll(fieldNameColumn, typesColumn, dataTypeColumn);
  	    	tablesViewContainer.getChildren().add(table);
     }
     
@@ -181,6 +217,12 @@ public class FXMLController {
     }
     
  	// -------- MISC ------- // 
+    
+    
+    private void initStrings() {
+		attrTempStr.setLength(0);
+		typeTempStr.setLength(0);
+    }
     
     /**
      *  clearTableView()
