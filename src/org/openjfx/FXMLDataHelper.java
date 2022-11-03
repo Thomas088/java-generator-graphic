@@ -9,12 +9,12 @@ public class FXMLDataHelper {
 	private ComboBox<EnumList.MariaAttributeTypesListEnum> databaseLinkType;
 
 	public FXMLDataHelper() {
-		
+			
 		databaseLinkType = new ComboBox<EnumList.MariaAttributeTypesListEnum>();
-		
 		for (EnumList.MariaAttributeTypesListEnum type : EnumList.MariaAttributeTypesListEnum.values()) {
 			databaseLinkType.getItems().add(type);
 		}
+
 	}
 	
 	public String getAttributeName() {
