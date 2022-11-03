@@ -1,5 +1,4 @@
 package org.openjfx;
-
 import classes.from.console.project.EnumList;
 import javafx.scene.control.ComboBox;
 
@@ -8,8 +7,7 @@ public class FXMLDataHelper {
 	private String attributeName;
 	private String typeName;
 	private ComboBox<EnumList.MariaAttributeTypesListEnum> databaseLinkType;
-	
-	
+
 	public FXMLDataHelper() {
 		
 		databaseLinkType = new ComboBox<EnumList.MariaAttributeTypesListEnum>();

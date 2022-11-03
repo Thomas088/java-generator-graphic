@@ -100,17 +100,24 @@ public class FXMLController {
     	nbLines = 0;
     	itr = 0;
     	
-    	// INIT COLUMNS
-	    table = new TableView<FXMLDataHelper>();
-        fieldNameColumn = new TableColumn<FXMLDataHelper, String>("ATTRIBUTE");
-        typesColumn = new TableColumn<FXMLDataHelper, String>("TYPE");
-        dataTypeColumn = new TableColumn<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>>("DATABASE DATA TYPE NEEDED");  
-//        dataChoiceDB = new ComboBox<EnumList.MariaAttributeTypesListEnum>();
+    	initTableAndHeaders();
+    	table = new TableView<FXMLDataHelper>();
         
         // SET COLUMNS WITH CORRECT SIZES
         fieldNameColumn.setPrefWidth(250);
         typesColumn.setPrefWidth(250);
         dataTypeColumn.setPrefWidth(353);        
+    }
+    
+    @FXML
+    /**
+     * initTableAndHeaders()
+     */
+    public void initTableAndHeaders() {
+    	
+        fieldNameColumn = new TableColumn<FXMLDataHelper, String>("ATTRIBUTE");
+        typesColumn = new TableColumn<FXMLDataHelper, String>("TYPE");
+        dataTypeColumn = new TableColumn<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>>("DATABASE DATA TYPE NEEDED"); 
     }
     
     @FXML
@@ -165,24 +172,27 @@ public class FXMLController {
      */
     private void createFxElementsFromDataParse() {
 		
-		    convertDataForTableView(listOfTables.get(indexTable));
+		try {
+			
+			    convertDataForTableView(listOfTables.get(indexTable));
+			    
+	 	    	String tablename = listOfTables.get(indexTable).getTableName();
+	 	    	currentTableNameUI.setText(tablename.toUpperCase());
+			
+			    helperTableArray$ = FXCollections.observableArrayList(attributeListHelper);
 		    
- 	    	String tablename = listOfTables.get(indexTable).getTableName();
- 	    	currentTableNameUI.setText(tablename.toUpperCase());
-		    
-		    out.println("DATAS : " + attributeListHelper);
+	    	    fieldNameColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("attributeName"));
+	    	    typesColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("typeName"));
+	    	    dataTypeColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>>("databaseLinkType"));
+	 	   	
+	 	    	table.setItems(helperTableArray$);
+	 	    	table.getColumns().addAll(fieldNameColumn, typesColumn, dataTypeColumn);
+	 	    	tablesViewContainer.getChildren().add(table);
+					
+		} catch (Exception e) {
+			logger.logError("createFxElementsFromDataParse", e.getMessage());
+		}
 		
-		    helperTableArray$ = FXCollections.observableArrayList();
-		    helperTableArray$.addAll(attributeListHelper);
-	    
-    	    fieldNameColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("attributeName"));
-    	    typesColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("typeName"));
-    	    dataTypeColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>>("databaseLinkType"));
- 	   	
- 	    	table.setItems(helperTableArray$);
- 	    	
- 	    	table.getColumns().addAll(fieldNameColumn, typesColumn, dataTypeColumn);
- 	    	tablesViewContainer.getChildren().add(table);
     }
     
     @FXML
@@ -202,10 +212,15 @@ public class FXMLController {
      */
     private void getPreviousTable() {
     	
-    	if(indexTable == 0) return;   	
+    	if(indexTable == 0){
+    		logger.logWarning("getNextTable()", "(Off - 1) Value lower than zero.");
+    		return;
+    	};
+    	
+    	indexTable--;
     	clearTableView();
+    	initTableAndHeaders();
     	createFxElementsFromDataParse();
-    	out.println("PREVIOUS BUTTON");
     }
     
     @FXML
@@ -214,10 +229,15 @@ public class FXMLController {
      */
     private void getNextTable() {
     	
-    	if(indexTable == (listOfTables.size() - 1)) return;
+    	if(indexTable == (listOfTables.size() - 1)) {
+    		logger.logWarning("getNextTable()", "(Off + 1) Value greater than the MAX array values.");
+    		return;
+    	};
+    	
+    	indexTable++;
     	clearTableView();
+    	initTableAndHeaders();
     	createFxElementsFromDataParse();
-    	out.println("NEXT BUTTON");
     }
     
  	// -------- MISC ------- // 
@@ -232,7 +252,7 @@ public class FXMLController {
      *  clearTableView()
      */ 
     private void clearTableView() {
-    	table.getItems().clear();
+    	tablesViewContainer.getChildren().clear();
     }
     
     @FXML
