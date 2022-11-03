@@ -67,7 +67,17 @@ public class EnumList {
 		COUNTRY("COUNTRY"),
 		PHONE("TEXT"),
 		EMAIL("EMAIL"),
-		JOB("JOB");
+		JOB("JOB"),
+		COMPANY("COMPANY"),
+		HEXA_COLORS("HEXA_COLORS"),
+		RGB_COLORS("RGB_COLORS"),
+		URLS("URLS"),
+		REFERENCE_NUMBER("REFERENCE_NUMBER"),
+		IBAN("IBAN"),
+		CREDIT_CARD("CREDIT_CARD"),
+		CVV("CVV"),
+		CURRENCY("CURRENCY");
+		
 		
 		private String currentType;
 	    private static Map<String, MariaAttributeTypesListEnum> MARIA_TYPES_MAP;
