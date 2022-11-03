@@ -1,21 +1,22 @@
 package org.openjfx;
 
+import classes.from.console.project.EnumList;
+import javafx.scene.control.ComboBox;
+
 public class FXMLDataHelper {
 
 	private String attributeName;
 	private String typeName;
-	private String databaseLinkType;
+	private ComboBox<EnumList.MariaAttributeTypesListEnum> databaseLinkType;
 	
 	
 	public FXMLDataHelper() {
 		
-		this.attributeName = "";
-		this.typeName = "";
-		this.databaseLinkType = "";
+		databaseLinkType = new ComboBox<EnumList.MariaAttributeTypesListEnum>();
 		
-//		this.attributeName.setLength(0);
-//		this.typeName.setLength(0);
-//		this.databaseLinkType.setLength(0);
+		for (EnumList.MariaAttributeTypesListEnum type : EnumList.MariaAttributeTypesListEnum.values()) {
+			databaseLinkType.getItems().add(type);
+		}
 	}
 	
 	public String getAttributeName() {
@@ -38,12 +39,12 @@ public class FXMLDataHelper {
 	}
 
 
-	public String getDatabaseLinkType() {
+	public ComboBox<EnumList.MariaAttributeTypesListEnum> getDatabaseLinkType() {
 		return databaseLinkType;
 	}
 
 
-	public void setDatabaseLinkType(String databaseLinkType) {
+	public void setDatabaseLinkType(ComboBox<EnumList.MariaAttributeTypesListEnum> databaseLinkType) {
 		this.databaseLinkType = databaseLinkType;
 	}
 

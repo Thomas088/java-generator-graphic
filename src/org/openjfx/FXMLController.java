@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import javax.security.auth.callback.Callback;
 
+import classes.from.console.project.EnumList;
 // Console project packages
 import classes.from.console.project.FileHandler;
 import classes.from.console.project.GeneratorLogger;
@@ -51,6 +52,8 @@ public class FXMLController {
 	private StringBuilder typeTempStr = new StringBuilder();
 	private StringBuilder dbLinkTempStr = new StringBuilder();
 	
+	public ComboBox dataChoiceDB;
+	
 	private Vector<TableData> listOfTables;
 	private Vector<FXMLDataHelper> attributeListHelper;
 	
@@ -65,7 +68,7 @@ public class FXMLController {
     private TableView<FXMLDataHelper> table;    
     private TableColumn<FXMLDataHelper, String> fieldNameColumn;   
     private TableColumn<FXMLDataHelper, String> typesColumn;    
-    private TableColumn<FXMLDataHelper, ComboBox> dataTypeColumn;
+    private TableColumn<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>> dataTypeColumn;
     
     private int indexTable;
     private int nbLines;
@@ -101,7 +104,8 @@ public class FXMLController {
 	    table = new TableView<FXMLDataHelper>();
         fieldNameColumn = new TableColumn<FXMLDataHelper, String>("ATTRIBUTE");
         typesColumn = new TableColumn<FXMLDataHelper, String>("TYPE");
-        dataTypeColumn = new TableColumn<FXMLDataHelper, ComboBox>("DATABASE DATA TYPE NEEDED");
+        dataTypeColumn = new TableColumn<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>>("DATABASE DATA TYPE NEEDED");  
+//        dataChoiceDB = new ComboBox<EnumList.MariaAttributeTypesListEnum>();
         
         // SET COLUMNS WITH CORRECT SIZES
         fieldNameColumn.setPrefWidth(250);
@@ -173,7 +177,7 @@ public class FXMLController {
 	    
     	    fieldNameColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("attributeName"));
     	    typesColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, String>("typeName"));
-    	    dataTypeColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, ComboBox>("databaseLinkType"));
+    	    dataTypeColumn.setCellValueFactory(new PropertyValueFactory<FXMLDataHelper, ComboBox<EnumList.MariaAttributeTypesListEnum>>("databaseLinkType"));
  	   	
  	    	table.setItems(helperTableArray$);
  	    	
