@@ -1,6 +1,8 @@
 package org.openjfx;
 import static java.lang.System.out;
 
+import java.awt.Image;
+
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -20,10 +22,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 // Utils
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -76,6 +80,7 @@ public class FXMLController {
     private int indexTable;
     private int nbLines;
     private int itr;
+
     
     @FXML
     private Button parseFileButton;
@@ -93,11 +98,19 @@ public class FXMLController {
     private Label currentTableNameUI;
     
     @FXML
+    private VBox TblN ;
+    
+    @FXML
+    private ImageView Image ;
+        
+    //javafx.scene.image.Image logo = new javafx.scene.image.Image("JavaMaria.jpg");
+    
+    @FXML
     /**
      * initialize() : init variables
      */
     public void initialize() {
-    	
+    		
     	// INIT INTEGER VARIABLES
     	indexTable = 0;
     	nbLines = 0;
@@ -109,16 +122,18 @@ public class FXMLController {
         
         // SET COLUMNS WITH CORRECT SIZES
         fieldNameColumn.setPrefWidth(250);
-        typesColumn.setPrefWidth(250);
-        dataTypeColumn.setPrefWidth(353);
+        typesColumn.setPrefWidth(150);
+        dataTypeColumn.setPrefWidth(250);
+       	
     }
+    
     
     @FXML
     /**
      * parseFile() : Parse the current selected file
      */
     private void parseFile() {
-    	
+   
     try {
     		
     	  	listOfTables = parser.parse("./labo-test/mcfly.sql");	  	
@@ -132,7 +147,7 @@ public class FXMLController {
     
     private void convertDataForTableView(TableData table) {
     	
-    try {
+    try { 
     	
     		attributeListHelper = new Vector<FXMLDataHelper>();
     		
@@ -164,13 +179,14 @@ public class FXMLController {
      */
     private void createFxElementsFromDataParse() {
 		
+		
 	    	// INIT COLUMNS
 		    table = new TableView<FXMLDataHelper>();
 		
 		    convertDataForTableView(listOfTables.get(indexTable));
 		    
  	    	String tablename = listOfTables.get(indexTable).getTableName();
- 	    	currentTableNameUI.setText(tablename.toUpperCase());
+ 	    	currentTableNameUI.setText("TABLE NAME : "+tablename.toUpperCase());
  	    	
 		    helperTableArray$ = FXCollections.observableArrayList(attributeListHelper);
     
@@ -199,7 +215,7 @@ public class FXMLController {
      * getPreviousTable()
      */
     private void getPreviousTable() {
-    	
+    	   	
     	if(indexTable == 0) {
     		logger.logWarning("getPreviousTable()", "(OFF by - 1)");
     		return;
@@ -237,6 +253,7 @@ public class FXMLController {
      *  clearTableView()
      */ 
     private void clearTableView() {
+    	
     	tablesViewContainer.getChildren().clear();
     }
     
