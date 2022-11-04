@@ -56,8 +56,29 @@ public class EnumList {
 		BOOLEAN("BOOLEAN"),
 		
 		// MISC
-		NULL("NULL");
-
+		NULL("NULL"),
+		
+		// DATABASE DATAS
+		FIRSTNAME("FIRSTNAME"),
+		LASTNAME("LASTNAME"),
+		ADDRESS("ADDRESS"),
+		ZIP_CODE("ZIP_CODE"),
+		CITY("CITY"),
+		COUNTRY("COUNTRY"),
+		PHONE("TEXT"),
+		EMAIL("EMAIL"),
+		JOB("JOB"),
+		COMPANY("COMPANY"),
+		HEXA_COLORS("HEXA_COLORS"),
+		RGB_COLORS("RGB_COLORS"),
+		URLS("URLS"),
+		REFERENCE_NUMBER("REFERENCE_NUMBER"),
+		IBAN("IBAN"),
+		CREDIT_CARD("CREDIT_CARD"),
+		CVV("CVV"),
+		CURRENCY("CURRENCY");
+		
+		
 		private String currentType;
 	    private static Map<String, MariaAttributeTypesListEnum> MARIA_TYPES_MAP;
 
@@ -87,38 +108,6 @@ public class EnumList {
 	    // [BONUS] : obtenir l'enum via la string (donc l'inverse)
 	    public static MariaAttributeTypesListEnum getAsEnum(String name) {
 	        return MARIA_TYPES_MAP.get(name.toLowerCase());
-	    }
-	}
-	
-	
-	// AN ENUM FOR DISPLAY ALL FAKE_DATABASE.FAKE_DATAS DATA TYPES
-	// NOT EXHAUSTIVE
-	/**
-	 * 
-	 * @author Java Generator Team
-	 *
-	 */
-	public static enum FakeDatasFromFakeDatabaseTypesEnum {
-		
-		FIRSTNAME("FIRSTNAME"),
-		LASTNAME("LASTNAME"),
-		ADDRESS("ADDRESS"),
-		ZIP_CODE("ZIP_CODE"),
-		CITY("CITY"),
-		COUNTRY("COUNTRY"),
-		PHONE("TEXT"),
-		EMAIL("EMAIL"),
-		JOB("JOB");
-	    
-		private String dataType;
-
-	    // CONSTRUCTOR
-	    FakeDatasFromFakeDatabaseTypesEnum(String currentType) {
-	        this.dataType = currentType;
-	    }
-
-	    public String getName() {
-	        return this.dataType;
 	    }
 	}
 	

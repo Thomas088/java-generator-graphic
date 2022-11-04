@@ -561,6 +561,8 @@ public class Parser {
 			  	    	// init arrays for the next table
 			  	    	arrayAttributeTemp = new ArrayList<String>();
 			  	    	arrayTypeTemp = new ArrayList<String>();
+			  	    	
+			  	    	// HASHMAP VERSION 
 			  	    	mapAttributeDatasTemp = new HashMap<String, ArrayList<String>>();
 		        	} 
 	            	

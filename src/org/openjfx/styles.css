@@ -50,8 +50,8 @@
 }
 
 .table-view .cell:selected{
-	-fx-background-color : #203764;
-	-fx-text-fill : white;
+	/* -fx-background-color : #203764; */
+	-fx-color : white;
 }
  
 .pane{
