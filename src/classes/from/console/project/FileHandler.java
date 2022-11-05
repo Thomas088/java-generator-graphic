@@ -371,6 +371,7 @@ public class FileHandler {
 					    		
 					    	default:
 					    		
+					    		  // WE SEARCH INTO OUR CUSTOM DATABASE TYPES DATAS (SEE MariaAttributeTypesListEnum ENUMLIST)
 					    		  if (!mapTemp.containsKey(attrTemp)) {
 					    			  
 					    			  Vector<String> tempDataAttr = database.callSearchDatasProcedure(attrTemp, quantityOfLines);

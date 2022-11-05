@@ -3,8 +3,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javafx.beans.property.StringProperty;
-
 /**
  * TableData => The architecture defined for retrieves data from .sql file (used in Parser class)
  * @author Java Generator Team
