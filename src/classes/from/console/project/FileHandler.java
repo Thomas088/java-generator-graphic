@@ -5,6 +5,9 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,15 +23,11 @@ public class FileHandler {
 	private static final DatabaseController database = new DatabaseController();
 	private static final GeneratorLogger logger = new GeneratorLogger();
 	private static final StringBuilder queryToPrepare = new StringBuilder();
+	private static final StringBuilder strTemp = new StringBuilder();;
 	private static FileWriter writer;
 	private static File sqlFileToCreate;
 	private static File sqlFileToRead;
-	
-	private static ArrayList<Integer> intDataAttr;
-	
-	private static ArrayList<ArrayList<String>> tempData; 
-	
-	private static HashMap<String, Vector<String>> mapTemp;
+	private static HashMap<String, Vector<String>> mapTemp; // link attributes with mariadb stored procedures
 	
 	/**
 	 * createFile() : Create a simple file (no write in file - only blank)
@@ -82,6 +81,7 @@ public class FileHandler {
 			    Iterator<TableData> iterator = tables.iterator();
 			    
 			    String attrTemp;
+
 			    int num;
 			    int pk_fk_nb = 0;
 			      
@@ -95,7 +95,7 @@ public class FileHandler {
 				    	  
 				    	 queryToPrepare.append(Helpers.startTemplateInsert(current.getTableName()) + " " +
 				    			 			   Helpers.printAllAttributes(current) +
-				    			 			   Helpers.addValues()			    			 			   );
+				    			 			   Helpers.addValues());
 				    	 
 				    	 for (int j = 0; j < current.getDatabaseEquivalenceList().size(); j++) {	
 				    		 
@@ -120,21 +120,21 @@ public class FileHandler {
 						    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
 						    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ", "));
+						    			  queryToPrepare.append(mapTemp.get(attrTemp).get(num) + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ");"));
+						    			  queryToPrepare.append(mapTemp.get(attrTemp).get(num) + ");");
 						    		  }
 						    		 
 					    			 break;
 					    			 
 					    		 case FLOAT:
 					    			 
-					    			 Float newFloat = Helpers.generateRandomFloat(0.0f, 100000.00f);
+					    			  Float newFloat = Helpers.generateRandomFloat(0.0f, 100000.00f);
 					    			 
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(newFloat + ", "));
+						    			  queryToPrepare.append(newFloat + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(newFloat + ");"));
+						    			  queryToPrepare.append(newFloat + ");");
 						    		  }
 					    			 	
 					    			 break;
@@ -144,9 +144,9 @@ public class FileHandler {
 					    			  Double newDouble = Helpers.generateRandomDouble(0.00, 100000.00);
 					    			 
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(newDouble + ", "));
+						    			  queryToPrepare.append(newDouble + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(newDouble + ");"));
+						    			  queryToPrepare.append(newDouble + ");");
 						    		  }
 					    			 	
 					    			 break;	
@@ -155,11 +155,37 @@ public class FileHandler {
 					    		 case FOREIGN_KEY:
 					   					    		  					    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(String.valueOf(pk_fk_nb) + ", ");
+						    			  queryToPrepare.append(pk_fk_nb + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(String.valueOf(pk_fk_nb) + ");");
+						    			  queryToPrepare.append(pk_fk_nb + ");");
 						    		  }
 						    		  
+					    			 break;
+					    			 
+					    		 case VARCHAR:
+					    			 
+					    			 	strTemp.append(database.callGenerateLipsum(10, 20, 1));
+		  					    		  
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ");");
+						    		  }
+						    		  
+						    		  strTemp.setLength(0);					    		  
+					    			 break;
+					    			 
+					    		 case LOREM_IPSUM:
+					    			 
+					    			 strTemp.append(database.callGenerateLipsum(20, 20, 1));
+	  					    		  
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ");");
+						    		  }
+						    		  
+						    		  strTemp.setLength(0);						    		  
 					    			 break;
 					    			 
 					    		 case DATE:
@@ -179,12 +205,58 @@ public class FileHandler {
 						    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
 						    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ", "));
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ");"));
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ");");
 						    		  }
 						    		  
 					    			 break;
+					    			 
+					    		 case CURRENT_DATE:
+					    					    		  
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(java.time.LocalDate.now().toString().trim()) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(java.time.LocalDate.now().toString().trim()) + ");");
+						    		  }
+						    		  
+					    			 break;
+					    			 
+					    		 case TIME:
+					    			 
+						    		  if (!mapTemp.containsKey(attrTemp)) {
+						    			  
+						    			  Vector<String> c_Temp = new Vector<String>();
+						    			  
+						    			  for (String value : database.callGenerateRandomTime("00:00:00", "23:59:59", quantityOfLines)) {				    				  
+						    				  
+						    				  c_Temp.add(String.valueOf(value));
+						    			  }					    			 						    			 
+						    			 
+						    			  mapTemp.put(attrTemp, c_Temp);
+						    		  }
+						    		  
+						    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
+						    		  
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ");");
+						    		  }
+						    		  
+					    	     break;
+					    	     
+					    		 case CURRENT_TIME:
+					    			 
+					    			 LocalTime localTime = LocalTime.now();
+					    			 
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(localTime.toString()) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(localTime.toString()) + ");");
+						    		  }
+						    		  
+					    	     break;
 					    			 
 					    		 case DATETIME:
 					    			 
@@ -203,9 +275,21 @@ public class FileHandler {
 						    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
 						    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ", "));
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ");"));
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ");");
+						    		  }
+						    		  
+					    			 break;
+					    			 
+					    		 case CURRENT_DATETIME:
+					    			 
+					    			  strTemp.append(database.callGenerateCurrentTimestamp());
+						    		  
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ");");
 						    		  }
 						    		  
 					    			 break;
@@ -227,9 +311,21 @@ public class FileHandler {
 						    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
 						    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ", "));
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ");"));
+						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ");");
+						    		  }
+						    		  
+					    			 break;
+					    			 
+					    		 case CURRENT_TIMESTAMP:
+					    			 
+					    			 String timestamp = database.callGenerateCurrentTimestamp();
+						    		  
+						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
+						    			  queryToPrepare.append(Helpers.addValuesInsert(timestamp) + ", ");
+						    		  } else {
+						    			  queryToPrepare.append(Helpers.addValuesInsert(timestamp) + ");");
 						    		  }
 						    		  
 					    			 break;
@@ -253,9 +349,9 @@ public class FileHandler {
 						    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
 						    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ", "));
+						    			  queryToPrepare.append(mapTemp.get(attrTemp).get(num) + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ");"));
+						    			  queryToPrepare.append(mapTemp.get(attrTemp).get(num) + ");");
 						    		  }
 						    		 
 					    			 break;
@@ -264,12 +360,11 @@ public class FileHandler {
 					    			 
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
 						    			  
-						    			  queryToPrepare.append(Helpers.addValuesInsert("null" + ", "));
+						    			  queryToPrepare.append("null" + ", ");
 						    		  } else {
-						    			  queryToPrepare.append(Helpers.addValuesInsert("null" + ");"));
+						    			  queryToPrepare.append("null" + ");");
 						    		  }
-					    			 
-					    			 break;
+						    		  
 					    		
 					    	default:
 					    		
@@ -282,13 +377,12 @@ public class FileHandler {
 					    		  num = Helpers.generateRandom(0, (mapTemp.get(attrTemp).size() - 1));
 					    		  
 					    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
-					    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ", "));
+					    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ", ");
 					    		  } else {
-					    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num) + ");"));
+					    			  queryToPrepare.append(Helpers.addValuesInsert(mapTemp.get(attrTemp).get(num)) + ");");
 					    		  }
 					    		  
 			    				 break;
-				    		 
 				    		 }
 			    	    }  	 
 				    	 

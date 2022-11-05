@@ -22,6 +22,7 @@ public class Helpers {
 	private static final RegexRepertory regexRepertory = new RegexRepertory();
 	private static final GeneratorLogger logger = new GeneratorLogger();
 	private static Matcher matcher; // not final because different regex evaluated in different helpers 
+	private static final String quote = "'";
 	
 	
 	private static int i;
@@ -63,7 +64,7 @@ public class Helpers {
 	}
 	
 	public static String addValuesInsert(String str) {
-	    return str;
+	    return quote + str + quote;
 	}
 	
 	public static String addValues() {

@@ -278,6 +278,95 @@ import java.sql.SQLException;
 		}
 		
 		/**
+		 * callGenerateRandomTimestamp() - Call the random number date
+		 * @param {String} dateStart
+		 * @param {String} dateEnd
+		 * @return {Vector<String>} the data response
+		 */
+		public String callGenerateCurrentTimestamp() {
+			
+            boolean isLogged = createConnection();
+            
+            if (isLogged) 
+            	 logger.logInfo("createConnection()", "Connexion success.");
+	        else logger.logError("createConnection()", "Error on connexion to database.");
+					
+			Vector<String> strArr = new Vector<String>();
+							
+			try {	
+				
+					statement = connection.prepareStatement("{call generate_current_timestamp();}");
+					
+					if(!statement.isClosed()) {
+						
+						ResultSet datas = statement.executeQuery();
+					
+						while (datas.next()) {
+							strArr.add(datas.getString(1).trim());
+						} 
+						
+						out.println("SUCCESS : \n");
+						return strArr.get(0);
+						
+					} else {
+						out.println("STATEMENT NOT OPEN");
+					}		
+				
+			} catch (SQLException e) {
+				logger.logError("callGenerateRandomTimestamp()", e.getMessage()); 			
+			}
+			
+			return strArr.get(0);
+		}
+		
+		/**
+		 * callGenerateRandomTimestamp() - Call the random number date
+		 * @param {String} dateStart
+		 * @param {String} dateEnd
+		 * @return {Vector<String>} the data response
+		 */
+		public String callGenerateLipsum(int min, int max, int startsWithLoremIpsum) {
+			
+            boolean isLogged = createConnection();
+            
+            if (isLogged) 
+            	 logger.logInfo("createConnection()", "Connexion success.");
+	        else logger.logError("createConnection()", "Error on connexion to database.");
+					
+			Vector<String> strArr = new Vector<String>();
+							
+			try {	
+				
+					statement = connection.prepareStatement("{select lipsum(?, ?, ?);}");
+					statement.setInt(1, min);
+					statement.setInt(2, max);
+					statement.setInt(3, startsWithLoremIpsum);
+					
+					if(!statement.isClosed()) {
+						
+						ResultSet datas = statement.executeQuery();
+					
+						while (datas.next()) {
+							strArr.add(datas.getString(1).trim());
+						} 
+						
+						out.println("SUCCESS : \n");
+						return strArr.get(0);
+						
+					} else {
+						out.println("STATEMENT NOT OPEN");
+					}		
+				
+			} catch (SQLException e) {
+				logger.logError("callGenerateRandomTimestamp()", e.getMessage()); 			
+			}
+			
+			return strArr.get(0);
+		}
+		
+		
+		
+		/**
 		 * callGenerateRandomBoolean() - Call the random number boolean
 		 * @param {String} dateStart
 		 * @param {String} dateEnd
@@ -338,6 +427,53 @@ import java.sql.SQLException;
 				}
 			
 			return false;
-		}	
+		}
+		
+		/**
+		 * callGenerateRandomTime() - Call the random number date
+		 * @param {String} dateStart
+		 * @param {String} dateEnd
+		 * @return {Vector<String>} the data response
+		 */
+		public Vector<String> callGenerateRandomTime(String TPStart, String TPEnd, int limitResult) {
+			
+            boolean isLogged = createConnection();
+            
+            if (isLogged) 
+            	 logger.logInfo("createConnection()", "Connexion success.");
+	        else logger.logError("createConnection()", "Error on connexion to database.");
+					
+			Vector<String> strArr = new Vector<String>();
+							
+			try {	
+				
+					statement = connection.prepareStatement("{call generate_random_time(?,?,?);}");
+					
+					statement.setString(1, TPStart);
+					statement.setString(2, TPEnd);
+					statement.setInt(3, limitResult);
+					
+					if(!statement.isClosed()) {
+						
+						ResultSet datas = statement.executeQuery();
+					
+						while (datas.next()) {
+							strArr.add(datas.getString(1).trim());
+						} 
+						
+						out.println("SUCCESS : \n");
+						return strArr;
+						
+					} else {
+						out.println("STATEMENT NOT OPEN");
+					}		
+				
+			} catch (SQLException e) {
+				logger.logError("callGenerateRandomTimestamp()", e.getMessage()); 			
+			}
+			
+			return strArr;
+		}
+		
     }
 
