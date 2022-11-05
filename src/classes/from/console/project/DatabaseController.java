@@ -39,17 +39,6 @@ import java.sql.SQLException;
 			
 			initCredentials();
 			
-//		------------------------------------------------------- // 
-//			TODO : handle Dotenv !
-			
-//			Dotenv dotenv = Dotenv.load();			
-//			databaseName.append(dotenv.get("MARIADB_DB_NAME"));
-//			url.append(dotenv.get("MARIADB_DB_URL"));
-//	    	user.append(dotenv.get("MARIADB_USER"));
-//	    	pwd.append(dotenv.get("MARIADB_PASSWORD"));
-			
-//			------------------------------------------------------- // 
-			
 			databaseName.append("fake_database");
 			url.append("jdbc:mariadb://localhost:3306/");
 	    	user.append("root");
@@ -279,9 +268,7 @@ import java.sql.SQLException;
 		
 		/**
 		 * callGenerateRandomTimestamp() - Call the random number date
-		 * @param {String} dateStart
-		 * @param {String} dateEnd
-		 * @return {Vector<String>} the data response
+		 * @return {String} the data response
 		 */
 		public String callGenerateCurrentTimestamp() {
 			
@@ -320,9 +307,9 @@ import java.sql.SQLException;
 		}
 		
 		/**
-		 * callGenerateRandomTimestamp() - Call the random number date
-		 * @param {String} dateStart
-		 * @param {String} dateEnd
+		 * callGenerateLipsum() - Call the random number date
+		 * @param {int} min
+		 * @param {int} max
 		 * @return {Vector<String>} the data response
 		 */
 		public String callGenerateLipsum(int min, int max, int startsWithLoremIpsum) {
@@ -337,7 +324,7 @@ import java.sql.SQLException;
 							
 			try {	
 				
-					statement = connection.prepareStatement("{select lipsum(?, ?, ?);}");
+					statement = connection.prepareStatement("{call loremIpsum(?, ?, ?);}");
 					statement.setInt(1, min);
 					statement.setInt(2, max);
 					statement.setInt(3, startsWithLoremIpsum);

@@ -81,6 +81,7 @@ public class FileHandler {
 			    Iterator<TableData> iterator = tables.iterator();
 			    
 			    String attrTemp;
+			    String loremStr;
 
 			    int num;
 			    int pk_fk_nb = 0;
@@ -164,7 +165,8 @@ public class FileHandler {
 					    			 
 					    		 case VARCHAR:
 					    			 
-					    			 	strTemp.append(database.callGenerateLipsum(10, 20, 1));
+					    			    loremStr = database.callGenerateLipsum(5, 10, 0);	 
+					    			 	strTemp.append(loremStr);
 		  					    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
 						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ", ");
@@ -177,7 +179,8 @@ public class FileHandler {
 					    			 
 					    		 case LOREM_IPSUM:
 					    			 
-					    			 strTemp.append(database.callGenerateLipsum(20, 20, 1));
+					    			    loremStr = database.callGenerateLipsum(10, 20, 1);		 
+					    			 	strTemp.append(loremStr);;
 	  					    		  
 						    		  if (j < (current.getDatabaseEquivalenceList().size() - 1)) { 
 						    			  queryToPrepare.append(Helpers.addValuesInsert(strTemp.toString()) + ", ");
