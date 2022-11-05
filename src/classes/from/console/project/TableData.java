@@ -243,6 +243,24 @@ public class TableData {
 	}
 	
 	/**
+	 * resetDatabaseEquivalenceList() : reset the database data type array
+	 * [helper for next procedures calls]  
+	 * @param databaseEquivalenceList
+	 */
+	public void resetDatabaseEquivalenceList() {
+		this.databaseEquivalenceList.clear();
+	}
+	
+	/**
+	 * setDatabaseEquivalenceList() : set the database data type array (who match the array this.attributeList)
+	 * [helper for next procedures calls]  
+	 * @param databaseEquivalenceList
+	 */
+	public void pushInDatabaseEquivalenceList(String databaseEquivalenceType) {
+		this.databaseEquivalenceList.add(databaseEquivalenceType);
+	}
+	
+	/**
 	 * getIsNullList() : get the list of null / no-null values (useful if the user explicitely specify null values to add)
 	 * @return {ArrayList<String>} the list of null as array (who match the array this.attributeList)
 	 */

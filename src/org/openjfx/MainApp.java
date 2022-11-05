@@ -29,6 +29,12 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
     	
+        boolean isLogged = database.createConnection();
+        
+        if (isLogged) 
+        	 logger.logInfo("createConnection()", "Connexion success.");
+        else logger.logError("createConnection()", "Error on connexion to database.");
+    	
         Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());

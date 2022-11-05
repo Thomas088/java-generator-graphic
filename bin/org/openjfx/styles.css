@@ -75,7 +75,6 @@
 .table-view .cell{
 	-fx-cell-size : 25 ; 
 	-fx-text-fill : #222B35;
-	-fx-alignment : CENTER-LEFT; 
 	-fx-alignment : center-left; 
 	-fx-border-color : #F2F2F2; 
 }

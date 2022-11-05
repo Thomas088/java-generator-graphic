@@ -21,29 +21,19 @@ public class EnumList {
 		
 		// Integers
 		INT("INT"),
-		SMALLINT("SMALLINT"),
-		TINYINT("TINYINT"),
-		MEDIUMINT("MEDIUMINT"),
-		BIGINT("BIGINT"),
 		
 		// Floats and Doubles
 		FLOAT("FLOAT"),
 		DOUBLE("DOUBLE"),
-		DECIMAL("DECIMAL"),
-		
-		// Strings
-		VARCHAR("VARCHAR"),
-		TINYTEXT("TINYTEXT"),
-		TEXT("TEXT"),
-		LONGTEXT("LONGTEXT"),
 		
 		// ID's
-		AUTO_INCREMENT("AUTO_INCREMENT"),
 		PRIMARY_KEY("PRIMARY_KEY"),
 		FOREIGN_KEY("FOREIGN_KEY"),
 
 		// Binary types
-		BLOB("BLOB"),
+//		BLOB("BLOB"),
+		
+		VARCHAR("VARCHAR"),
 		
 		// Date / Time
 		DATE("DATE"),

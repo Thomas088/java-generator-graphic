@@ -6,10 +6,11 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/java-fx-library">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Utilisateur/eclipse-workspace/libraries/mariadb-java-client-3.0.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
