@@ -3,8 +3,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javafx.beans.property.StringProperty;
-
 /**
  * TableData => The architecture defined for retrieves data from .sql file (used in Parser class)
  * @author Java Generator Team
@@ -240,6 +238,24 @@ public class TableData {
 	 */
 	public void setDatabaseEquivalenceList(ArrayList<String> databaseEquivalenceList) {
 		this.databaseEquivalenceList = databaseEquivalenceList;
+	}
+	
+	/**
+	 * resetDatabaseEquivalenceList() : reset the database data type array
+	 * [helper for next procedures calls]  
+	 * @param databaseEquivalenceList
+	 */
+	public void resetDatabaseEquivalenceList() {
+		this.databaseEquivalenceList.clear();
+	}
+	
+	/**
+	 * setDatabaseEquivalenceList() : set the database data type array (who match the array this.attributeList)
+	 * [helper for next procedures calls]  
+	 * @param databaseEquivalenceList
+	 */
+	public void pushInDatabaseEquivalenceList(String databaseEquivalenceType) {
+		this.databaseEquivalenceList.add(databaseEquivalenceType);
 	}
 	
 	/**

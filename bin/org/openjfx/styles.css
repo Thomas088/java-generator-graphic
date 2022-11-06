@@ -1,24 +1,30 @@
+
+
+/* 
+ * PARSE/GENERATE BUTTONS
+ */
 .button{
 	-fx-background-color : transparent;
-	-fx-text-fill : #203764;
-	-fx-border-color : #203764;
+	-fx-text-fill : #FFFFFF;
+	
 }
-
 .button:hover{
 	-fx-background-color : #305496;
-	-fx-text-fill : white;
+	-fx-text-fill : #FFFFFF;
 }
-
 .button:pressed{
 	-fx-background-color : #D9E1F2;
-	-fx-text-fill : #203764;
+	-fx-text-fill : #222B35;
 }
 
 
+/* 
+ * EXIT BUTTON
+ */
 .buttonE{
 	-fx-background-color : transparent;
-	-fx-text-fill : #C00000;
-	-fx-border-color : #C00000;
+	-fx-text-fill : white;
+	
 }
 
 .buttonE:hover{
@@ -28,13 +34,37 @@
 
 .buttonE:pressed{
 	-fx-background-color : #FFD5D5;
-	-fx-text-fill : #203764;
+	-fx-text-fill : #222B35;
 }
 
+
+/* 
+ * EXIT BUTTON
+ */
+.buttonN{
+	-fx-background-color : #222B35;
+	-fx-text-fill : white;
+	-fx-border-color : white;
+}
+
+.buttonN:hover{
+	-fx-background-color : #305496;
+	-fx-text-fill : white;
+}
+
+.buttonN:pressed{
+	-fx-background-color : #D9E1F2;
+	-fx-text-fill : #222B35;
+}
+
+/* 
+ * TABLEVIEW DISPLAY
+ */
 .table-view .column-header,
 .table-view .column-header-background .filler{
 	-fx-cell-size : 20 ; 
-	-fx-background-color : #2F75B5;
+	-fx-background-color : #222B35;
+	-fx-text-fill : white;
 }
 
 .table-view .column-header .label{
@@ -43,18 +73,30 @@
 }
 
 .table-view .cell{
-	-fx-cell-size : 30 ; 
-	-fx-text-fill : #000000;
-	-fx-alignment : CENTER-LEFT; 
+	-fx-cell-size : 25 ; 
+	-fx-text-fill : #222B35;
 	-fx-alignment : center-left; 
+	-fx-border-color : #F2F2F2; 
 }
 
-.table-view .cell:selected{
-	/* -fx-background-color : #203764; */
-	-fx-color : white;
+.table-view .cell:hover{
+	-fx-background-color : #FFE389;
+	-fx-text-fill : #222B35;
+
 }
- 
+.table-view .cell:selected{
+	-fx-background-color : #F2F2F2;
+	-fx-text-fill : #222B35;
+	
+}
+
+/* 
+ * PANE DISPLAY
+ */ 
 .pane{
 	
-	-fx-background-color : #203764;
+	-fx-background-color : #222B35;
+	
 }
+
+

@@ -3,6 +3,7 @@ import static java.lang.System.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -21,6 +22,7 @@ public class Helpers {
 	private static final RegexRepertory regexRepertory = new RegexRepertory();
 	private static final GeneratorLogger logger = new GeneratorLogger();
 	private static Matcher matcher; // not final because different regex evaluated in different helpers 
+	private static final String quote = "'";
 	
 	
 	private static int i;
@@ -61,8 +63,12 @@ public class Helpers {
 	    return toConcat.toString();
 	}
 	
-	public static String addValuesInsert() {
-	    return "VALUES " + "(SOON...)" +  ";";
+	public static String addValuesInsert(String str) {
+	    return quote + str + quote;
+	}
+	
+	public static String addValues() {
+	    return "VALUES " + " (";
 	}
 	
 	// MYSQL - MARIA
@@ -391,6 +397,41 @@ public class Helpers {
 	    } catch (IOException | InterruptedException ex) {
 	    	throw ex;
 	    }
+	}
+	
+	/**
+	 *generateRandom()
+	 * @param max
+	 * @param min
+	 * @return {int}
+	 */
+	public static int generateRandom(int max, int min) {
+		int random = (int)Math.floor( Math.random() * (max - min + 1) + min);
+		return random;
+	}
+	
+	/**
+	 *generateRandomFloat()
+	 * @param max
+	 * @param min
+	 * @return {Float}
+	 */
+	public static Float generateRandomFloat(Float max, Float min) {
+
+		Float random = Float.valueOf(String.valueOf(Math.floor( Math.random() * (max - min + 1) + min)));  ;
+		return random;
+	}
+	
+	/**
+	 *generateRandomDouble()
+	 * @param max
+	 * @param min
+	 * @return {Double}
+	 */
+	public static Double generateRandomDouble(Double max, Double min) {
+
+		Double random = Double.valueOf(String.valueOf(Math.floor( Math.random() * (max - min + 1) + min)));  ;
+		return random;
 	}
 
 }

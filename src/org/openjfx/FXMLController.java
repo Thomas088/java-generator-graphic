@@ -1,6 +1,8 @@
 package org.openjfx;
 import static java.lang.System.out;
 
+import java.awt.Image;
+
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -20,10 +22,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 // Utils
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -53,17 +57,13 @@ public class FXMLController {
 	
 	private StringBuilder attrTempStr = new StringBuilder();
 	private StringBuilder typeTempStr = new StringBuilder();
-	private StringBuilder dbLinkTempStr = new StringBuilder();
-	
-	public ComboBox dataChoiceDB;
-	
+
 	private Vector<TableData> listOfTables;
 	private Vector<FXMLDataHelper> attributeListHelper;
 	
 	private FXMLDataHelper newHelper;
 	
 	// Observables '$' suffixed because of JavaScript convention (useful)
-    private ObservableList<TableData> objTableArray$;
     private ObservableList<FXMLDataHelper> helperTableArray$;
     
     // UI TABLE VIEW VARIABLES
@@ -93,11 +93,17 @@ public class FXMLController {
     private Label currentTableNameUI;
     
     @FXML
+    private VBox TblN;
+    
+    @FXML
+    private ImageView Image ;
+    
+    @FXML
     /**
      * initialize() : init variables
      */
     public void initialize() {
-    	
+    		
     	// INIT INTEGER VARIABLES
     	indexTable = 0;
     	nbLines = 0;
@@ -109,19 +115,26 @@ public class FXMLController {
         
         // SET COLUMNS WITH CORRECT SIZES
         fieldNameColumn.setPrefWidth(250);
-        typesColumn.setPrefWidth(250);
-        dataTypeColumn.setPrefWidth(353);
+        typesColumn.setPrefWidth(150);
+        dataTypeColumn.setPrefWidth(250);
+       	
     }
+     
+    @Override
+    public void finalize() {
+    	helperTableArray$.stream().close();
+    }
+    
     
     @FXML
     /**
      * parseFile() : Parse the current selected file
      */
     private void parseFile() {
-    	
+   
     try {
     		
-    	  	listOfTables = parser.parse("./labo-test/mcfly.sql");	  	
+    	  	listOfTables = parser.parse("./labo-test/first-test.sql");	  	
     	  	createFxElementsFromDataParse();
     		
     	} catch (Exception e) {
@@ -132,7 +145,7 @@ public class FXMLController {
     
     private void convertDataForTableView(TableData table) {
     	
-    try {
+    try { 
     	
     		attributeListHelper = new Vector<FXMLDataHelper>();
     		
@@ -164,13 +177,14 @@ public class FXMLController {
      */
     private void createFxElementsFromDataParse() {
 		
+		
 	    	// INIT COLUMNS
 		    table = new TableView<FXMLDataHelper>();
 		
 		    convertDataForTableView(listOfTables.get(indexTable));
 		    
  	    	String tablename = listOfTables.get(indexTable).getTableName();
- 	    	currentTableNameUI.setText(tablename.toUpperCase());
+ 	    	currentTableNameUI.setText("TABLE NAME : "+ tablename.toUpperCase());
  	    	
 		    helperTableArray$ = FXCollections.observableArrayList(attributeListHelper);
     
@@ -189,25 +203,45 @@ public class FXMLController {
      */
     private void generateFile() {
     	fileToExport = fileHandler.createFile("eci-insert-test");
-    	fileHandler.writeToFile(10, listOfTables, fileToExport.getAbsolutePath());;
+    	fileHandler.writeToFile(20, listOfTables, fileToExport.getAbsolutePath());;
     }
    
     // -------- NAVIGATION ------- // 
     
     @FXML
-    /**
+    /** typescript
+     *  num: number = 0;
      * getPreviousTable()
      */
     private void getPreviousTable() {
-    	
-    	if(indexTable == 0) {
-    		logger.logWarning("getPreviousTable()", "(OFF by - 1)");
-    		return;
+    	   	
+    	if (listOfTables.get(indexTable).getDatabaseEquivalenceList().size() == 0) {
+    		
+        	for (int i = 0; i < listOfTables.get(indexTable).getAttributeList().size(); i++) {
+        		
+        			if (table.getItems().get(i).getDatabaseLinkType().toString().length() == 0 || 
+        			    table.getItems().get(i).getDatabaseLinkType() == null) break;
+        		
+            		String item = table.getItems().get(i).getDatabaseLinkType().getValue().getType().toLowerCase();      	
+            		listOfTables.get(indexTable).pushInDatabaseEquivalenceList(item);     	         	
+    	    }
+  	
     	}
     	
-    	indexTable--;
-    	clearTableView();
-    	createFxElementsFromDataParse();
+    	out.println("TABLE : " + listOfTables.get(indexTable).getTableName());
+    	out.println("ATTRIBUTES : " + listOfTables.get(indexTable).getAttributeList());
+    	out.println("DB LIST : " + listOfTables.get(indexTable).getDatabaseEquivalenceList());
+    	
+    indexTable--;
+		
+	if (indexTable < 0) {
+		indexTable++;
+//		nextTableButton.setDisable(true);
+		return;
+	}
+	
+	clearTableView();
+	createFxElementsFromDataParse();	
     }
     
     @FXML
@@ -215,17 +249,38 @@ public class FXMLController {
      * getNextTable()
      */
     private void getNextTable() {
-    	
-    	if(indexTable == (listOfTables.size() - 1)) {
-    		logger.logWarning("getPreviousTable()", "(OFF by + 1)");
-    		return;
-    	}
-    	
-    	indexTable++;
+
+    		
+        	if (listOfTables.get(indexTable).getDatabaseEquivalenceList().size() == 0) {
+        		
+            	for (int i = 0; i < listOfTables.get(indexTable).getAttributeList().size(); i++) {
+            		
+            			if (table.getItems().get(i).getDatabaseLinkType().toString().length() == 0 || 
+            			    table.getItems().get(i).getDatabaseLinkType() == null) break;
+            		
+                		String item = table.getItems().get(i).getDatabaseLinkType().getValue().getType().toLowerCase();      	
+                		listOfTables.get(indexTable).pushInDatabaseEquivalenceList(item);     	         	
+        	    }
+      	
+        	}
+        	
+        	out.println("TABLE : " + listOfTables.get(indexTable).getTableName());
+        	out.println("ATTRIBUTES : " + listOfTables.get(indexTable).getAttributeList());
+        	out.println("DB LIST : " + listOfTables.get(indexTable).getDatabaseEquivalenceList());
+        	
+        indexTable++;
+    		
+		if (indexTable == listOfTables.size()) {	
+			indexTable--;
+//			nextTableButton.setDisable(true);
+			return;
+		}
+		
     	clearTableView();
-    	createFxElementsFromDataParse();
+    	createFxElementsFromDataParse();	
     }
     
+ 
  	// -------- MISC ------- // 
     
     private void initStrings() {

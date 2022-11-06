@@ -1,17 +1,20 @@
-#------------------------------------------------------------
-#        Script MySQL.
-#------------------------------------------------------------
+CREATE TABLE Cours(
+   Id_Cours INT AUTO_INCREMENT,
+   Nom_Cours VARCHAR(255) NOT NULL,
+   Nombre_Seance TINYINT NOT NULL,
+   PRIMARY KEY(Id_Cours)
+);
 
-#------------------------------------------------------------
-# Table: product_menu
-#------------------------------------------------------------
+CREATE TABLE Annee_Scolaire(
+   Id_AnneeScolaire INT AUTO_INCREMENT,
+   Annee_Scolaire VARCHAR(255) NOT NULL,
+   PRIMARY KEY(Id_AnneeScolaire)
+);
 
-CREATE TABLE product_menu(
-        idMenu    Int NOT NULL ,
-        idProduct Int NOT NULL ,
-        quantity  Int NOT NULL
-	,CONSTRAINT product_menu_PK PRIMARY KEY (idMenu,idProduct)
-
-	,CONSTRAINT product_menu_menu_FK FOREIGN KEY (idMenu) REFERENCES menu(idMenu)
-	,CONSTRAINT product_menu_product0_FK FOREIGN KEY (idProduct) REFERENCES product(idProduct)
-)ENGINE=InnoDB;
+CREATE TABLE Section(
+   Id_Section INT AUTO_INCREMENT,
+   Nom_Section VARCHAR(255) NOT NULL,
+   Degres_Section VARCHAR(255) NOT NULL,
+   Nom_Titulaire VARCHAR(470) NOT NULL,
+   PRIMARY KEY(Id_Section)
+);
