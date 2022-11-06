@@ -92,6 +92,7 @@ public class FileHandler {
 			    	 
 				    for (int i = 0; i < quantityOfLines; i++) { 
 				    	
+
 				    	pk_fk_nb++;
 				    	  
 				    	 queryToPrepare.append(Helpers.startTemplateInsert(current.getTableName()) + " " +
@@ -392,7 +393,9 @@ public class FileHandler {
 				    	 
 				    	writer.write(queryToPrepare.toString() + "\n");
 				    	queryToPrepare.setLength(0); // init for the new query
-				  }    
+				  }
+				    
+				    pk_fk_nb = 0;
 		      }
 		           
 		      logger.logInfo("writeToFile()", "Success write on file.");

@@ -184,7 +184,7 @@ public class FXMLController {
 		    convertDataForTableView(listOfTables.get(indexTable));
 		    
  	    	String tablename = listOfTables.get(indexTable).getTableName();
- 	    	currentTableNameUI.setText("TABLE NAME : "+ tablename.toUpperCase());
+ 	    	currentTableNameUI.setText("TABLE : "+ tablename.toUpperCase());
  	    	
 		    helperTableArray$ = FXCollections.observableArrayList(attributeListHelper);
     
