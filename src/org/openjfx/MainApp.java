@@ -25,7 +25,9 @@ public class MainApp extends Application {
 	GeneratorLogger logger = new GeneratorLogger();
 	File fileToExport;
 	boolean isLogged = false;
-
+	
+	static Stage currentStage;
+	
     @Override
     public void start(Stage stage) throws Exception {
     	
@@ -40,12 +42,20 @@ public class MainApp extends Application {
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         stage.setTitle("JAVA GENERATOR ECI");
         stage.setScene(scene);
-        
+        setPrimaryStage(stage);
         stage.show();
     }
 
     public static void main(String[] args) {
     	launch(args);
+    }
+    
+    public static void setPrimaryStage(Stage newStage) {
+        currentStage = newStage;
+    }
+    
+    public static Stage getPrimaryStage() {
+        return currentStage;
     }
 
 }
